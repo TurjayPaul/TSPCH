@@ -117,7 +117,7 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text("Preview"),
+                  child: Text("Previous"),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(

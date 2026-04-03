@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tspch/login_screen.dart';   // ADD THIS
+import 'package:tspch/login_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB8E6B8), // light/medium green
+      backgroundColor: Color(0xFFB8E6B8),
       body: Stack(
         children: [
           Center(
@@ -29,8 +29,8 @@ class SplashScreen extends StatelessWidget {
             right: 20,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFDAF0DA), // light green
-                foregroundColor: Colors.black, // black text
+                backgroundColor: Color(0xFFDAF0DA),
+                foregroundColor: Colors.black,
               ),
               onPressed: () {
                 Navigator.push(
