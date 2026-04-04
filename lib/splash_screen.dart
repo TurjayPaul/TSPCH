@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:tspch/login_screen.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Delay for 3 seconds then navigate
+    Timer(Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => LoginScreen()),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,26 +37,18 @@ class SplashScreen extends StatelessWidget {
                 Text(
                   "TSPCH",
                   style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green[800]),
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green[800],
+                  ),
+                ),
+                SizedBox(height: 30),
+
+                // 🔄 Circular Loading Indicator
+                CircularProgressIndicator(
+                  color: Colors.green[700],
                 ),
               ],
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFDAF0DA),
-                foregroundColor: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => LoginScreen()));
-              },
-              child: Text("Next"),
             ),
           ),
         ],
