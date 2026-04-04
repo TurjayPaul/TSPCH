@@ -13,7 +13,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // Delay for 3 seconds then navigate
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
@@ -44,7 +43,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
                 SizedBox(height: 30),
 
-                // 🔄 Circular Loading Indicator
                 CircularProgressIndicator(
                   color: Colors.green[700],
                 ),
