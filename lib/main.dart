@@ -14,6 +14,3 @@ class HardwareUIWalkthrough extends StatelessWidget {
     );
   }
 }
-
-
-//Checking git
