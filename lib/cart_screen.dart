@@ -22,7 +22,8 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text("Your Cart")),
-      body: Padding(
+      body: Container(
+        color: Colors.green[100], // Green background for the whole cart
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
@@ -54,8 +55,24 @@ class _CartScreenState extends State<CartScreen> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
+            widget.currentUser.paymentMethod == null
+                ? Text(
+              "Payment method not selected",
+              style: TextStyle(color: Colors.red),
+            )
+                : Text(
+              "Payment method: ${widget.currentUser.paymentMethod}",
+              style: TextStyle(color: Colors.green[800]),
+            ),
+            SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
+                if (widget.currentUser.paymentMethod == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Please select a payment method in your profile")),
+                  );
+                  return;
+                }
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -67,7 +84,7 @@ class _CartScreenState extends State<CartScreen> {
                 );
               },
               child: Text("Checkout"),
-            )
+            ),
           ],
         ),
       ),

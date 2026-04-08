@@ -41,7 +41,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Purchase successful via $paymentMethod!")), // ✅ updated
+      SnackBar(content: Text(
+          "Purchase successful via $paymentMethod!")), // ✅ updated
     );
 
     Navigator.pop(context);
