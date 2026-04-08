@@ -19,6 +19,7 @@ class HomeScreenState extends State<HomeScreen> {
 
   final List<String> categories = [
     "All",
+    "Monitor",
     "CPU",
     "GPU",
     "RAM",
@@ -29,7 +30,35 @@ class HomeScreenState extends State<HomeScreen> {
     "Case"
   ];
 
+  IconData getCategoryIcon(String category) {
+    switch (category) {
+      case "CPU":
+        return Icons.memory;
+      case "GPU":
+        return Icons.videogame_asset;
+      case "RAM":
+        return Icons.storage;
+      case "Motherboard":
+        return Icons.developer_board;
+      case "Storage":
+        return Icons.sd_storage;
+      case "Power Supply":
+        return Icons.power;
+      case "Cooling":
+        return Icons.ac_unit;
+      case "Case":
+        return Icons.desktop_windows;
+      case "Monitor":
+        return Icons.monitor;
+      default:
+        return Icons.devices;
+    }
+  }
+
   final List<Map<String, String>> products = [
+    {"name": "LG UltraGear 27\"", "price": "\$350", "category": "Monitor"},
+    {"name": "Samsung Odyssey G5", "price": "\$300", "category": "Monitor"},
+    {"name": "ASUS TUF Gaming 24\"", "price": "\$220", "category": "Monitor"},
     {"name": "Intel Core i9-13900K", "price": "\$589", "category": "CPU"},
     {"name": "AMD Ryzen 9 7950X", "price": "\$699", "category": "CPU"},
     {"name": "Intel Core i5-13600K", "price": "\$320", "category": "CPU"},
@@ -78,7 +107,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB8E6B8),
+      backgroundColor: Colors.green[700],
       appBar: AppBar(
         title: Text("TSPCH Catalog"),
         centerTitle: true,
@@ -180,8 +209,11 @@ class HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.memory,
-                            size: 45, color: Colors.green[700]),
+                        Icon(
+                          getCategoryIcon(product["category"]!),
+                          size: 150,
+                          color: Colors.black,
+                        ),
                         SizedBox(height: 8),
                         Text(product["name"]!,
                             textAlign: TextAlign.center,
