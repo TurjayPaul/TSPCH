@@ -1,59 +1,46 @@
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatelessWidget {
-  final List<String> orders = ["Intel i9 CPU", "Corsair RAM"];
+class User {
+  String name;
+  String email;
+  List<Map<String, String>> purchasedItems;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFB8E6B8),
-      appBar: AppBar(
-        backgroundColor: Colors.green[600],
-        title: Text("Profile"),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(12),
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 40,
-              backgroundColor: Colors.grey[300],
-              child: Icon(Icons.person, size: 50, color: Colors.green[700]),
-            ),
-            SizedBox(height: 10),
-            Text("Shubhasish",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            Text("Shubhasish636@email.com",
-                style: TextStyle(color: Colors.black)),
-            SizedBox(height: 20),
-            Text("Order History", style: TextStyle(fontWeight: FontWeight.bold)),
-            Expanded(
-              child: ListView.builder(
-                itemCount: orders.length,
+  User({required this.name, required this.email}) : purchasedItems = [];
+}
+
+class ProfileScreen extends StatelessWidget {
+final User currentUser;
+
+ProfileScreen({required this.currentUser});
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(title: Text("Profile")),
+    body: Padding(
+      padding: EdgeInsets.all(20),
+      child: Column(children: [
+        CircleAvatar(radius: 40, child: Icon(Icons.person, size: 40)),
+        SizedBox(height: 10),
+        Text(currentUser.name, style: TextStyle(fontSize: 18)),
+        Text(currentUser.email),
+        SizedBox(height: 20),
+        Text("Purchased Items", style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Expanded(
+            child: currentUser.purchasedItems.isEmpty
+                ? Text("No items purchased yet")
+                : ListView.builder(
+                itemCount: currentUser.purchasedItems.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(orders[index]),
+                  final item = currentUser.purchasedItems[index];
+                  return ListTile(
+                    title: Text(item["name"]!),
+                    subtitle: Text(item["price"]!),
                   );
-                },
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFDAF0DA), foregroundColor: Colors.black),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text("Previous"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+                }))
+      ]),
+    ),
+  );
+}
 }

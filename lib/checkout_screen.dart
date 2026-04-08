@@ -2,59 +2,71 @@ import 'package:flutter/material.dart';
 import 'package:tspch/profile_screen.dart';
 
 
-class CheckoutScreen extends StatelessWidget {
+class User {
+  String name;
+  String email;
+  List<Map<String, String>> purchasedItems;
+
+  User({required this.name, required this.email}) : purchasedItems = [];
+}
+
+class CheckoutScreen extends StatefulWidget {
+  final User currentUser;
+
+  CheckoutScreen({required this.currentUser});
+
+  @override
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
+  int selectedPayment = 1;
+  final TextEditingController addressController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFA8D5BA),
-      appBar: AppBar(
-        backgroundColor: Colors.green[700],
-        title: Text("Checkout"),
-      ),
+      appBar: AppBar(title: Text("Checkout")),
       body: Padding(
-        padding: EdgeInsets.all(12),
-        child: Column(
-          children: [
-            Container(
-              color: Colors.grey[300],
-              padding: EdgeInsets.all(12),
-              child: Text("Shipping Address:\nSubhasish, 123 Street, City"),
-            ),
-            SizedBox(height: 10),
-            Container(
-              color: Colors.grey[300],
-              padding: EdgeInsets.all(12),
-              child: Text("Payment Method:\nCredit Card (Static)"),
-            ),
-            SizedBox(height: 10),
-            Container(
-              color: Colors.grey[300],
-              padding: EdgeInsets.all(12),
-              child: Text("Order Summary:\nIntel i9 + RAM = \$748"),
-            ),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFDAF0DA), foregroundColor: Colors.black),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Previous"),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFDAF0DA), foregroundColor: Colors.black),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => ProfileScreen()));
-                  },
-                  child: Text("Next"),
-                ),
-              ],
-            ),
-          ],
-        ),
+        padding: EdgeInsets.all(20),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text("Shipping Address"),
+          TextField(
+            controller: addressController,
+            decoration: InputDecoration(hintText: "Enter address"),
+          ),
+          SizedBox(height: 20),
+          Text("Payment Method"),
+          RadioListTile(
+            value: 1,
+            groupValue: selectedPayment,
+            onChanged: (value) {
+              setState(() {
+                selectedPayment = 1;
+              });
+            },
+            title: Text("Card"),
+          ),
+          RadioListTile(
+            value: 2,
+            groupValue: selectedPayment,
+            onChanged: (value) {
+              setState(() {
+                selectedPayment = 2;
+              });
+            },
+            title: Text("Cash on Delivery"),
+          ),
+          Spacer(),
+          ElevatedButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Order Confirmed!")));
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+            child: Text("Confirm Order"),
+          )
+        ]),
       ),
     );
   }

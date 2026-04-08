@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tspch/product_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final User currentUser;
+
+  HomeScreen({required this.currentUser});
 
   @override
   State<HomeScreen> createState() => HomeScreenState();
@@ -68,35 +70,53 @@ class HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  List<Map<String, String>> cartItems = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFB8E6B8),
+      backgroundColor: Color(0xFFB8E6B8),
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: const Text("TSPCH Catalog"),
+        title: Text("TSPCH Catalog"),
         centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+              icon: Icon(Icons.person),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => ProfileScreen(
+                            currentUser: widget.currentUser)));
+              }),
+          IconButton(
+              icon: Icon(Icons.shopping_cart),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => CartScreen(
+                            cartItems: cartItems,
+                            currentUser: widget.currentUser)));
+              }),
+        ],
       ),
       body: Column(
         children: [
-          // Search
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             child: TextField(
               onChanged: updateSearch,
               decoration: InputDecoration(
-                hintText: "Search hardware...",
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: Colors.grey[300],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
+                  hintText: "Search hardware...",
+                  prefixIcon: Icon(Icons.search),
+                  filled: true,
+                  fillColor: Colors.grey[300],
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12))),
             ),
           ),
-
-          // Categories
           SizedBox(
             height: 45,
             child: ListView.builder(
@@ -108,92 +128,72 @@ class HomeScreenState extends State<HomeScreen> {
                 return GestureDetector(
                   onTap: () => selectCategory(cat),
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 6),
-                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    margin: EdgeInsets.symmetric(horizontal: 6),
+                    padding: EdgeInsets.symmetric(horizontal: 14),
                     decoration: BoxDecoration(
-                      color: isSelected ? Colors.green : Colors.grey[300],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                        color: isSelected ? Colors.green : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(20)),
                     alignment: Alignment.center,
-                    child: Text(
-                      cat,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: isSelected ? Colors.white : Colors.black,
-                      ),
-                    ),
+                    child: Text(cat,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: isSelected ? Colors.white : Colors.black)),
                   ),
                 );
               },
             ),
           ),
-
           const SizedBox(height: 10),
-
-          // Products
           Expanded(
             child: filteredProducts.isEmpty
-                ? const Center(
-              child: Text(
-                "No products found",
-                style:
-                TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            )
+                ? Center(
+                child: Text("No products found",
+                    style: TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold)))
                 : GridView.builder(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12),
               itemCount: filteredProducts.length,
-              gridDelegate:
-              const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 final product = filteredProducts[index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            ProductDetailScreen(product: product),
-                      ),
-                    );
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => ProductDetailScreen(
+                                product: product,
+                                cartItems: cartItems,
+                                currentUser: widget.currentUser)));
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    padding: const EdgeInsets.all(10),
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(15)),
+                    padding: EdgeInsets.all(10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.memory,
                             size: 45, color: Colors.green[700]),
-                        const SizedBox(height: 8),
-                        Text(
-                          product["name"]!,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          product["price"]!,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        SizedBox(height: 8),
+                        Text(product["name"]!,
+                            textAlign: TextAlign.center,
+                            style:
+                            TextStyle(fontWeight: FontWeight.bold)),
+                        SizedBox(height: 5),
+                        Text(product["price"]!,
+                            style: TextStyle(fontWeight: FontWeight.w600)),
                       ],
                     ),
                   ),
                 );
               },
             ),
-          ),
+          )
         ],
       ),
     );
