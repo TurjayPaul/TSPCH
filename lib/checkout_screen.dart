@@ -12,18 +12,20 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+
+  String paymentMethod = "COD"; // ✅ added
+
   /// Calculate total price dynamically
   int get totalPrice {
     int total = 0;
     for (var item in widget.cartItems) {
-      // Remove non-numeric characters like $ and parse to int
       String priceStr = item['price']!.replaceAll(RegExp(r'[^\d]'), '');
       total += int.tryParse(priceStr) ?? 0;
     }
     return total;
   }
 
-  /// Confirm purchase, add items to user's purchasedItems, clear cart
+  /// Confirm purchase
   void confirmPurchase() {
     if (widget.cartItems.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -32,25 +34,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       return;
     }
 
-    // Add cart items to user's purchasedItems
     widget.currentUser.purchasedItems.addAll(widget.cartItems);
 
-    // Clear the cart
     setState(() {
       widget.cartItems.clear();
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Purchase successful!")),
+      SnackBar(content: Text("Purchase successful via $paymentMethod!")), // ✅ updated
     );
 
-    Navigator.pop(context); // Go back to HomeScreen
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB8E6B8), // Splash screen background
+      backgroundColor: Color(0xFFB8E6B8),
       appBar: AppBar(
         title: Text("Checkout"),
         backgroundColor: Colors.green[700],
@@ -69,15 +69,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       )
           : Column(
         children: [
-          // List of cart items
           Expanded(
             child: ListView.builder(
               itemCount: widget.cartItems.length,
               itemBuilder: (context, index) {
                 final item = widget.cartItems[index];
                 return Card(
-                  margin:
-                  EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -99,7 +97,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
           ),
 
-          // Total and confirm button
           Padding(
             padding: EdgeInsets.all(16),
             child: Column(
@@ -124,7 +121,45 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ],
                 ),
+
                 SizedBox(height: 16),
+
+                // ✅ Payment Method UI (only addition)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Payment Method",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    RadioListTile(
+                      title: Text("Cash on Delivery"),
+                      value: "COD",
+                      groupValue: paymentMethod,
+                      onChanged: (value) {
+                        setState(() {
+                          paymentMethod = value.toString();
+                        });
+                      },
+                    ),
+                    RadioListTile(
+                      title: Text("Card Payment"),
+                      value: "Card",
+                      groupValue: paymentMethod,
+                      onChanged: (value) {
+                        setState(() {
+                          paymentMethod = value.toString();
+                        });
+                      },
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 10),
+
                 SizedBox(
                   width: double.infinity,
                   height: 50,
