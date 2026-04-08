@@ -55,14 +55,6 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
 
-              // ✅ ADDED PAYMENT METHOD DISPLAY
-              Center(
-                child: Text(
-                  "Payment: ${currentUser.paymentMethod ?? "Not selected"}",
-                  style: TextStyle(color: Colors.grey[700]),
-                ),
-              ),
-
               SizedBox(height: 20),
 
               Text(

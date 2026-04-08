@@ -8,12 +8,11 @@ class CheckoutScreen extends StatefulWidget {
   CheckoutScreen({required this.cartItems, required this.currentUser});
 
   @override
-  State<CheckoutScreen> createState() => _CheckoutScreenState();
+  State<CheckoutScreen> createState() => CheckoutScreenState();
 }
 
-class _CheckoutScreenState extends State<CheckoutScreen> {
-
-  String paymentMethod = "COD"; // ✅ added
+class CheckoutScreenState extends State<CheckoutScreen> {
+  String paymentMethod = "COD"; // Default payment method
 
   /// Calculate total price dynamically
   int get totalPrice {
@@ -41,8 +40,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(
-          "Purchase successful via $paymentMethod!")), // ✅ updated
+      SnackBar(content: Text("Purchase successful via $paymentMethod!")),
     );
 
     Navigator.pop(context);
@@ -97,7 +95,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               },
             ),
           ),
-
           Padding(
             padding: EdgeInsets.all(16),
             child: Column(
@@ -122,10 +119,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ],
                 ),
-
                 SizedBox(height: 16),
 
-                // ✅ Payment Method UI (only addition)
+                // Payment Method Section
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
