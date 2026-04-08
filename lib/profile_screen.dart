@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tspch/checkout_screen.dart';
 import 'package:tspch/user_model.dart';
 
 class ProfileScreen extends StatelessWidget {
