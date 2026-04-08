@@ -49,7 +49,7 @@ class CartScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (_) =>
-                          CheckoutScreen(currentUser: currentUser)));
+                          CheckoutScreen(cartItems: cartItems, currentUser: currentUser)));
             },
             child: Text("Checkout"),
           )

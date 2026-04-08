@@ -12,15 +12,18 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  /// Calculate total price dynamically
   int get totalPrice {
     int total = 0;
     for (var item in widget.cartItems) {
+      // Remove non-numeric characters like $ and parse to int
       String priceStr = item['price']!.replaceAll(RegExp(r'[^\d]'), '');
       total += int.tryParse(priceStr) ?? 0;
     }
     return total;
   }
 
+  /// Confirm purchase, add items to user's purchasedItems, clear cart
   void confirmPurchase() {
     if (widget.cartItems.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -29,11 +32,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       return;
     }
 
-    // Add cart items to user purchasedItems
+    // Add cart items to user's purchasedItems
     widget.currentUser.purchasedItems.addAll(widget.cartItems);
 
-    // Clear cart
-    widget.cartItems.clear();
+    // Clear the cart
+    setState(() {
+      widget.cartItems.clear();
+    });
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Purchase successful!")),
@@ -45,7 +50,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB8E6B8),
+      backgroundColor: Color(0xFFB8E6B8), // Splash screen background
       appBar: AppBar(
         title: Text("Checkout"),
         backgroundColor: Colors.green[700],
@@ -56,20 +61,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         child: Text(
           "Your cart is empty",
           style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.green[800]),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.green[800],
+          ),
         ),
       )
           : Column(
         children: [
+          // List of cart items
           Expanded(
             child: ListView.builder(
               itemCount: widget.cartItems.length,
               itemBuilder: (context, index) {
                 final item = widget.cartItems[index];
                 return Card(
-                  margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  margin:
+                  EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -90,6 +98,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               },
             ),
           ),
+
+          // Total and confirm button
           Padding(
             padding: EdgeInsets.all(16),
             child: Column(
@@ -97,14 +107,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Total:",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    Text("\$$totalPrice",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green[800])),
+                    Text(
+                      "Total:",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      "\$$totalPrice",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green[800],
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 16),
@@ -127,7 +144,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
