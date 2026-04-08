@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tspch/home_screen.dart';
 import 'package:tspch/user_model.dart';
-import 'package:tspch/home_screen.dart';
 import 'package:tspch/registration_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -108,6 +107,7 @@ class LoginScreen extends StatelessWidget {
                   User currentUser = User(
                     name: "User",
                     email: email,
+
                   );
 
                   Navigator.pushReplacement(
