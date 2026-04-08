@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tspch/profile_screen.dart';
+import 'package:tspch/user_model.dart';
+import 'package:tspch/cart_screen.dart';
 
-
-class User {
-  String name;
-  String email;
-  List<Map<String, String>> purchasedItems;
-
-  User({required this.name, required this.email}) : purchasedItems = [];
-}
 
 class CheckoutScreen extends StatefulWidget {
   final User currentUser;

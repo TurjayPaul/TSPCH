@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tspch/cart_screen.dart';
-class User {
-  String name;
-  String email;
-  List<Map<String, String>> purchasedItems;
-
-  User({required this.name, required this.email}) : purchasedItems = [];
-}
+import 'package:tspch/user_model.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final Map<String, String> product;
