@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tspch/user_model.dart';
 import 'package:tspch/product_detail_screen.dart';
+import 'package:tspch/profile_screen.dart';
+import 'package:tspch/cart_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final User currentUser;
