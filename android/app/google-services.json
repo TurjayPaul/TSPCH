@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "318423438284",
+    "project_id": "tspch-c13d2",
+    "storage_bucket": "tspch-c13d2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318423438284:android:cc82ee9606c5c76f4b8369",
+        "android_client_info": {
+          "package_name": "com.example.tspch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvTlZLj0Z81ThMyMXbOQOxLuoljcWHDdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
