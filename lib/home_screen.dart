@@ -7,7 +7,7 @@ import 'package:tspch/cart_screen.dart';
 class HomeScreen extends StatefulWidget {
   final User currentUser;
 
-  HomeScreen({required this.currentUser});
+  const HomeScreen({super.key, required this.currentUser});
 
   @override
   State<HomeScreen> createState() => HomeScreenState();
@@ -106,24 +106,32 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    int crossAxisCount = screenWidth > 900
+        ? 4
+        : screenWidth > 600
+        ? 3
+        : 2;
+
     return Scaffold(
       backgroundColor: Colors.green[700],
       appBar: AppBar(
-        title: Text("TSPCH Catalog"),
+        title: const Text("TSPCH Catalog"),
         centerTitle: true,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-              icon: Icon(Icons.person),
+              icon: const Icon(Icons.person),
               onPressed: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => ProfileScreen(
-                            currentUser: widget.currentUser)));
+                        builder: (_) =>
+                            ProfileScreen(currentUser: widget.currentUser)));
               }),
           IconButton(
-              icon: Icon(Icons.shopping_cart),
+              icon: const Icon(Icons.shopping_cart),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -137,18 +145,20 @@ class HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(12),
+            padding: const EdgeInsets.all(12),
             child: TextField(
               onChanged: updateSearch,
               decoration: InputDecoration(
-                  hintText: "Search hardware...",
-                  prefixIcon: Icon(Icons.search),
-                  filled: true,
-                  fillColor: Colors.grey[300],
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12))),
+                hintText: "Search hardware...",
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: Colors.grey[300],
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12)),
+              ),
             ),
           ),
+
           SizedBox(
             height: 45,
             child: ListView.builder(
@@ -157,40 +167,55 @@ class HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) {
                 final cat = categories[index];
                 final isSelected = cat == selectedCategory;
+
                 return GestureDetector(
                   onTap: () => selectCategory(cat),
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 6),
-                    padding: EdgeInsets.symmetric(horizontal: 14),
+                    margin: const EdgeInsets.symmetric(horizontal: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
                     decoration: BoxDecoration(
-                        color: isSelected ? Colors.green : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(20)),
+                      color: isSelected ? Colors.green : Colors.grey[300],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     alignment: Alignment.center,
-                    child: Text(cat,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: isSelected ? Colors.white : Colors.black)),
+                    child: Text(
+                      cat,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color:
+                        isSelected ? Colors.white : Colors.black,
+                      ),
+                    ),
                   ),
                 );
               },
             ),
           ),
+
           const SizedBox(height: 10),
+
           Expanded(
             child: filteredProducts.isEmpty
-                ? Center(
-                child: Text("No products found",
-                    style: TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold)))
+                ? const Center(
+              child: Text(
+                "No products found",
+                style:
+                TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            )
                 : GridView.builder(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               itemCount: filteredProducts.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10),
+              gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.75,
+              ),
               itemBuilder: (context, index) {
                 final product = filteredProducts[index];
+
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -203,25 +228,40 @@ class HomeScreenState extends State<HomeScreen> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(15)),
-                    padding: EdgeInsets.all(10),
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:
+                      MainAxisAlignment.start,
                       children: [
                         Icon(
-                          getCategoryIcon(product["category"]!),
-                          size: 150,
+                          getCategoryIcon(
+                              product["category"]!),
+                          size: 70,
                           color: Colors.black,
                         ),
-                        SizedBox(height: 8),
-                        Text(product["name"]!,
+                        const SizedBox(height: 8),
+
+                        Flexible(
+                          child: Text(
+                            product["name"]!,
                             textAlign: TextAlign.center,
-                            style:
-                            TextStyle(fontWeight: FontWeight.bold)),
-                        SizedBox(height: 5),
-                        Text(product["price"]!,
-                            style: TextStyle(fontWeight: FontWeight.w600)),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+
+                        const SizedBox(height: 5),
+
+                        Text(
+                          product["price"]!,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600),
+                        ),
                       ],
                     ),
                   ),
